@@ -1,0 +1,41 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usepackage{fontspec}
+\usepackage{adjustbox}
+\usepackage{lua-ul}
+\usepackage{gradient-text}
+\usepackage{qrcode}
+
+\definecolor{BGcolor}{RGB}{149,51,245}
+\usetikzlibrary{positioning, backgrounds, fit}
+\setmainfont{TeX Gyre Heros}
+\setmonofont{Menlo} % Mac default mono
+
+\begin{document}
+  
+\resizebox*{40cm}{!}{%
+  \begin{tikzpicture}[
+    , thick
+  ]
+    \node (cmp) {\bfseries\large\gradientRGB{CITE MY PAPERS}{80,74,237}{228,43,135}};
+    \node [below = 0mm of cmp] (url) {\ttfamily\color{BGcolor!50!black}\underLine{wqzhao.org/pub}};
+    \node (qr) [right = 0mm of cmp, yshift = -3.5mm]
+      {\color{BGcolor!50!black}\qrcode[height=11mm]{https://wqzhao.org/pub}};
+    \begin{scope}[on background layer]
+      \node (inner-box) [draw = none, fit=(cmp)(url)(qr), inner sep = 1mm] {};
+      \draw [fill = BGcolor, draw = BGcolor] ([xshift = -1mm, yshift = +1mm]inner-box.north west)
+                                          -- ([xshift = +1mm, yshift = +1mm]inner-box.north east)
+                                          -- ([xshift = +1mm, yshift = -1mm]inner-box.south east)
+                                          -- ([xshift = -1mm, yshift = -3mm]inner-box.south east)
+                                          -- ([xshift = +4mm, yshift = -3mm]inner-box.south west)
+                                          -- ([xshift = -3mm, yshift = -9mm]inner-box.south west)
+                                          -- ([xshift = -3mm, yshift = -1mm]inner-box.north west)
+                                          -- cycle;
+      \node [fill=BGcolor!10, fit=(cmp)(url)(qr), inner sep = 1mm] {};
+      \node [anchor = north east, font = \tiny, inner ysep = .5mm, color = BGcolor!10]
+        at (inner-box.south east) {\textsc{Wuqiong Zhao} @ Southeast University ~|~ Class of 2024};
+    \end{scope}
+  \end{tikzpicture}%
+}%
+
+\end{document}
